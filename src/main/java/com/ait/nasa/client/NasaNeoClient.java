@@ -1,5 +1,6 @@
 package com.ait.nasa.client;
 
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -27,12 +28,7 @@ public class NasaNeoClient {
                         .queryParam("api_key", props.key())
                         .build())
                 .retrieve()
-                .onStatus(status -> status.isError(), (request, response) -> {
-                    throw new NasaApiException(
-                            response.getStatusCode().value(),
-                            "NASA Neo-Feed request failed with status "
-                                    + response.getStatusCode().value());
-                })
+                .onStatus(HttpStatusCode::isError, errorHandler("NASA Neo-Feed request"))
                 .body(NeoFeedResponse.class);
     }
 
@@ -43,12 +39,15 @@ public class NasaNeoClient {
                         .queryParam("api_key", props.key())
                         .build(asteroidId))
                 .retrieve()
-                .onStatus(status -> status.isError(), (request, response) -> {
-                    throw new NasaApiException(
-                            response.getStatusCode().value(),
-                            "NASA Neo-Lookup request failed with status "
-                                    + response.getStatusCode().value());
-                })
+                .onStatus(HttpStatusCode::isError, errorHandler("NASA Neo-Lookup request "+asteroidId))
                 .body(NeoObject.class);
     }
+
+    private static final RestClient.ResponseSpec.ErrorHandler errorHandler(String context) {
+        return (request, response) -> {
+                throw new NasaApiException(
+                        response.getStatusCode().value(),
+                        context + " failed with status " + response.getStatusCode().value());
+        };
+        }
 }
