@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.ait.nasa.config.NasaApiProperties;
+import com.ait.nasa.dto.nasa.NeoObject;
 import com.ait.nasa.dto.response.NeoFeedResponse;
 import com.ait.nasa.exception.NasaApiException;
-import com.ait.nasa.model.NeoObject;
 
 @Component
 public class NasaNeoClient {

@@ -2,9 +2,9 @@ package com.ait.nasa;
 
 import com.ait.nasa.client.NasaNeoClient;
 import com.ait.nasa.config.NasaApiProperties;
+import com.ait.nasa.dto.nasa.NeoObject;
 import com.ait.nasa.dto.response.NeoFeedResponse;
 import com.ait.nasa.exception.NasaApiException;
-import com.ait.nasa.model.NeoObject;
 
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +75,7 @@ class NasaNeoClientTest {
                 .satisfies(n -> {
                     assertThat(n.id()).isEqualTo("2021277");
                     assertThat(n.name()).isEqualTo("277810 (2006 FV35)");
-                    assertThat(n.potentiallyHazardous()).isFalse();
+                    assertThat(n.isPotentiallyHazardousAsteroid()).isFalse();
                 });
 
         server.verify();
@@ -156,7 +156,7 @@ class NasaNeoClientTest {
         assertThat(neo).isNotNull();
         assertThat(neo.id()).isEqualTo("3542519");
         assertThat(neo.name()).isEqualTo("(2010 PK9)");
-        assertThat(neo.potentiallyHazardous()).isTrue();
+        assertThat(neo.isPotentiallyHazardousAsteroid()).isTrue();
 
         server.verify();
     }
