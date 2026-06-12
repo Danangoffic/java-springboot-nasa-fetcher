@@ -1,0 +1,37 @@
+{
+  "element_count": 2,
+  "near_earth_objects": {
+    "2026-06-01": [
+      {
+        "id": "2021277",
+        "neo_reference_id": "2021277",
+        "name": "277810 (2006 FV35)",
+        "absolute_magnitude_h": 21.0,
+        "is_potentially_hazardous_asteroid": false,
+        "close_approach_data": [
+          {
+            "close_approach_date": "2026-06-01",
+            "relative_velocity": { "kilometers_per_second": "5.12" },
+            "miss_distance": { "kilometers": "38764558.0" }
+          }
+        ]
+      }
+    ],
+    "2026-06-02": [
+      {
+        "id": "3727181",
+        "neo_reference_id": "3727181",
+        "name": "(2015 KE)",
+        "absolute_magnitude_h": 24.3,
+        "is_potentially_hazardous_asteroid": true,
+        "close_approach_data": [
+          {
+            "close_approach_date": "2026-06-02",
+            "relative_velocity": { "kilometers_per_second": "12.87" },
+            "miss_distance": { "kilometers": "7412559.0" }
+          }
+        ]
+      }
+    ]
+  }
+}

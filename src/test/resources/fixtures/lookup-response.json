@@ -1,0 +1,14 @@
+{
+  "id": "3542519",
+  "neo_reference_id": "3542519",
+  "name": "(2010 PK9)",
+  "absolute_magnitude_h": 21.43,
+  "is_potentially_hazardous_asteroid": true,
+  "close_approach_data": [
+    {
+      "close_approach_date": "2026-06-12",
+      "relative_velocity": { "kilometers_per_second": "8.41" },
+      "miss_distance": { "kilometers": "12345678.0" }
+    }
+  ]
+}
