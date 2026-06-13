@@ -154,7 +154,7 @@ curl "http://localhost:8080/asteroids?startDate=2026-06-01&endDate=2026-06-07"
 
 #### Sample Response — 400 Bad Request
 
-##### Returned for invalid date format, startDate after endDate, or a range over 7 days.
+##### Returned for invalid date format, startDate after endDate, or a range over 7 days
 
 ```json
 {
