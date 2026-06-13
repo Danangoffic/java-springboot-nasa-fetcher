@@ -12,6 +12,7 @@ import com.ait.nasa.dto.nasa.CloseApproachData;
 import com.ait.nasa.dto.nasa.NeoObject;
 import com.ait.nasa.dto.response.AsteroidResponse;
 import com.ait.nasa.dto.response.NeoFeedResponse;
+import com.ait.nasa.exception.InvalidDateRangeException;
 import com.ait.nasa.service.NeoService;
 
 @Service
@@ -26,6 +27,7 @@ public class NeoServiceImpl implements NeoService {
 
     @Override
     public List<AsteroidResponse> getClosestApproaches(LocalDate startDate, LocalDate endDate) {
+        validateRange(startDate, endDate); 
         NeoFeedResponse feed = nasaNeoClient.getFeed(startDate.toString(), endDate.toString());
 
         if (feed == null || feed.nearEarthObjects() == null) {
@@ -39,6 +41,16 @@ public class NeoServiceImpl implements NeoService {
                 .limit(TOP_LIMIT)                          // LIMIT: top 10
                 .map(this::toResponse)
                 .toList();
+    }
+
+    private void validateRange(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            throw new InvalidDateRangeException("start_date tidak boleh setelah end_date");
+        }
+        // inklusif: 1 Juni s/d 8 Juni = 7 hari beda -> 8 hari total. Sesuaikan ke definisimu.
+        if (start.plusDays(7).isBefore(end)) {
+            throw new InvalidDateRangeException("rentang maksimal 7 hari");
+        }
     }
 
     private AsteroidResponse toResponse(NeoObject neo) {

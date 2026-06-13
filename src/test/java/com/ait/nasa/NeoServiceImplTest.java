@@ -1,10 +1,13 @@
 package com.ait.nasa;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +19,7 @@ import com.ait.nasa.dto.nasa.EstimatedDiameter;
 import com.ait.nasa.dto.nasa.NeoObject;
 import com.ait.nasa.dto.response.AsteroidResponse;
 import com.ait.nasa.dto.response.NeoFeedResponse;
+import com.ait.nasa.exception.InvalidDateRangeException;
 import com.ait.nasa.service.NeoService;
 import com.ait.nasa.service.impl.NeoServiceImpl;
 
@@ -58,5 +62,56 @@ public class NeoServiceImplTest {
                 new CloseApproachData.RelativeVelocity("40000"),
                 new CloseApproachData.MissDistance(String.valueOf(missKm)));
         return new NeoObject(name, name, diameter, false, List.of(approach));
+    }
+
+    // ---------- validasi tanggal ----------
+
+    @Test
+    void exactlySevenDays_isValid() {
+        LocalDate start = LocalDate.parse("2026-06-01");
+        LocalDate end = LocalDate.parse("2026-06-08"); // 7 hari penuh
+        when(client.getFeed(start.toString(), end.toString()))
+                .thenReturn(new NeoFeedResponse(0, Map.of()));
+
+        assertThatCode(() -> service.getClosestApproaches(start, end))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void moreThanSevenDays_throws() {
+        LocalDate start = LocalDate.parse("2026-06-01");
+        LocalDate end = LocalDate.parse("2026-06-09"); // 8 hari -> invalid
+
+        assertThatThrownBy(() -> service.getClosestApproaches(start, end))
+                .isInstanceOf(InvalidDateRangeException.class);
+    }
+
+    @Test
+    void startAfterEnd_throws() {
+        LocalDate start = LocalDate.parse("2026-06-10");
+        LocalDate end = LocalDate.parse("2026-06-01");
+
+        assertThatThrownBy(() -> service.getClosestApproaches(start, end))
+                .isInstanceOf(InvalidDateRangeException.class);
+    }
+
+    @Test
+    void sameDay_isValid() {
+        LocalDate day = LocalDate.parse("2026-06-01");
+        when(client.getFeed(day.toString(), day.toString()))
+                .thenReturn(new NeoFeedResponse(0, Map.of()));
+
+        assertThatCode(() -> service.getClosestApproaches(day, day))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void invalidFormat_failsAtParse() {
+        assertThatThrownBy(() -> LocalDate.parse("01-06-2026"))
+                .isInstanceOf(DateTimeParseException.class);
+        assertThatThrownBy(() -> LocalDate.parse("2026/06/01"))
+                .isInstanceOf(DateTimeParseException.class);
+        assertThatThrownBy(() -> LocalDate.parse("bukan-tanggal"))
+                .isInstanceOf(DateTimeParseException.class);
     }
 }
