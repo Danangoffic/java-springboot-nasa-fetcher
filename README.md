@@ -158,8 +158,9 @@ curl "http://localhost:8080/asteroids?startDate=2026-06-01&endDate=2026-06-07"
 
 ```json
 {
-  "status": 400,
-  "error": "Bad Request",
-  "message": "Date range must not exceed 7 days"
+    "timestamp": "2026-06-13T15:18:10.458063Z",
+    "status": 400,
+    "error": "Bad Request",
+    "message": "Rentang tanggal maksimal 7 hari, diterima 12 hari"
 }
 ```
