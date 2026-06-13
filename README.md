@@ -44,7 +44,8 @@ java -jar build/libs/*.jar
 
 ### Get closest asteroids
 
-GET /asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+**GET** `/asteroids?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD`
+
 Returns the **top 10 asteroids** sorted by closest miss distance to Earth.
 Date range must be **<= 7 days**.
 
