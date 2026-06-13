@@ -30,7 +30,7 @@ export NASA_API_KEY=your_api_key_here
 ### run
 
 ```bash
-gradle run
+gradle bootRun
 ```
 
 App starts on `http://localhost:8080`
