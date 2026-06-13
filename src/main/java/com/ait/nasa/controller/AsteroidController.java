@@ -21,15 +21,16 @@ import com.ait.nasa.service.NeoService;
 public class AsteroidController {
     private static final long MAX_RANGE_DAYS = 7;
 
-    @Autowired
-    private NeoService neoService;
+    private final NeoService neoService;
 
-    @GetMapping("/asteroids")
+    public AsteroidController(NeoService neoService) {
+        this.neoService = neoService;
+    }
+
+    @GetMapping
     public ResponseEntity<List<AsteroidResponse>> getClosestAsteroids(
-            @RequestParam("startDate")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
         validateDateRange(startDate, endDate);
 
